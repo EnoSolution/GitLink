@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GitLink.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Source" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\GitLink_Source_Directory</Value>
+    </Setting>
+    <Setting Name="Target" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\GitLink_Target_Directory</Value>
+    </Setting>
+    <Setting Name="Exclude" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.git|private</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
