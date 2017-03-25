@@ -1,6 +1,6 @@
 # GitLink
 
-GitLink is a simple Windows systray application that ensures unidirectional replication between two directories, including their subdirectories.
+GitLink is a simple Windows systray application that ensures unidirectional replication between two directories, including their subdirectories. GitLink is developped under Visual Studio 2017 Community.
 
                                                                
 PURPOSE
