@@ -49,7 +49,7 @@ namespace GitLink.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".git|private")]
+        [global::System.Configuration.DefaultSettingValueAttribute("aPrivateDirectory|aPrivateFile|andSoOn")]
         public string Exclude {
             get {
                 return ((string)(this["Exclude"]));

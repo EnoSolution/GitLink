@@ -9,7 +9,7 @@
       <Value Profile="(Default)">C:\GitLink_Target_Directory</Value>
     </Setting>
     <Setting Name="Exclude" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.git|private</Value>
+      <Value Profile="(Default)">aPrivateDirectory|aPrivateFile|andSoOn</Value>
     </Setting>
   </Settings>
 </SettingsFile>

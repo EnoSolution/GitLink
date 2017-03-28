@@ -61,9 +61,10 @@
 			// listBoxMessages
 			// 
 			this.listBoxMessages.FormattingEnabled = true;
+			this.listBoxMessages.HorizontalScrollbar = true;
 			this.listBoxMessages.Location = new System.Drawing.Point(10, 165);
 			this.listBoxMessages.Name = "listBoxMessages";
-			this.listBoxMessages.Size = new System.Drawing.Size(484, 134);
+			this.listBoxMessages.Size = new System.Drawing.Size(986, 264);
 			this.listBoxMessages.TabIndex = 0;
 			// 
 			// notifyIcon
@@ -116,7 +117,7 @@
 			this.textBoxSource.Location = new System.Drawing.Point(10, 45);
 			this.textBoxSource.Name = "textBoxSource";
 			this.textBoxSource.ReadOnly = true;
-			this.textBoxSource.Size = new System.Drawing.Size(400, 20);
+			this.textBoxSource.Size = new System.Drawing.Size(905, 20);
 			this.textBoxSource.TabIndex = 2;
 			// 
 			// label1
@@ -142,7 +143,7 @@
 			this.textBoxTarget.Location = new System.Drawing.Point(10, 85);
 			this.textBoxTarget.Name = "textBoxTarget";
 			this.textBoxTarget.ReadOnly = true;
-			this.textBoxTarget.Size = new System.Drawing.Size(400, 20);
+			this.textBoxTarget.Size = new System.Drawing.Size(905, 20);
 			this.textBoxTarget.TabIndex = 5;
 			// 
 			// label3
@@ -158,7 +159,7 @@
 			// 
 			this.textBoxExclude.Location = new System.Drawing.Point(10, 125);
 			this.textBoxExclude.Name = "textBoxExclude";
-			this.textBoxExclude.Size = new System.Drawing.Size(400, 20);
+			this.textBoxExclude.Size = new System.Drawing.Size(905, 20);
 			this.textBoxExclude.TabIndex = 7;
 			// 
 			// label4
@@ -166,13 +167,13 @@
 			this.label4.AutoSize = true;
 			this.label4.Location = new System.Drawing.Point(7, 149);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(103, 13);
+			this.label4.Size = new System.Drawing.Size(109, 13);
 			this.label4.TabIndex = 8;
-			this.label4.Text = "Last 100 Events List";
+			this.label4.Text = "Last 1000 Events List";
 			// 
 			// buttonSource
 			// 
-			this.buttonSource.Location = new System.Drawing.Point(419, 45);
+			this.buttonSource.Location = new System.Drawing.Point(921, 45);
 			this.buttonSource.Name = "buttonSource";
 			this.buttonSource.Size = new System.Drawing.Size(75, 20);
 			this.buttonSource.TabIndex = 9;
@@ -182,7 +183,7 @@
 			// 
 			// buttonTarget
 			// 
-			this.buttonTarget.Location = new System.Drawing.Point(419, 85);
+			this.buttonTarget.Location = new System.Drawing.Point(921, 85);
 			this.buttonTarget.Name = "buttonTarget";
 			this.buttonTarget.Size = new System.Drawing.Size(75, 20);
 			this.buttonTarget.TabIndex = 10;
@@ -192,7 +193,7 @@
 			// 
 			// buttonApply
 			// 
-			this.buttonApply.Location = new System.Drawing.Point(419, 125);
+			this.buttonApply.Location = new System.Drawing.Point(921, 125);
 			this.buttonApply.Name = "buttonApply";
 			this.buttonApply.Size = new System.Drawing.Size(75, 20);
 			this.buttonApply.TabIndex = 11;
@@ -207,7 +208,7 @@
             this.toolStripMenuItem2});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
-			this.menuStrip.Size = new System.Drawing.Size(504, 24);
+			this.menuStrip.Size = new System.Drawing.Size(1008, 24);
 			this.menuStrip.TabIndex = 12;
 			this.menuStrip.Text = "menuStrip1";
 			// 
@@ -259,7 +260,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(504, 312);
+			this.ClientSize = new System.Drawing.Size(1008, 441);
 			this.Controls.Add(this.menuStrip);
 			this.Controls.Add(this.buttonApply);
 			this.Controls.Add(this.buttonTarget);
@@ -277,6 +278,7 @@
 			this.MainMenuStrip = this.menuStrip;
 			this.MaximizeBox = false;
 			this.Name = "FormGitLink";
+			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "GitLink";

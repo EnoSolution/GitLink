@@ -32,13 +32,14 @@ namespace GitLink
 		/// <param name="e"></param>
 		private void FormDirectoryReplication_Load(object sender, EventArgs e)
 		{
+			this.Text = "GitLink " + Application.ProductVersion;
 			//
 			// Get application parameters
 			// ==========================
 			//
 			textBoxSource.Text = source = Properties.Settings.Default.Source;
 			textBoxTarget.Text =  target = Properties.Settings.Default.Target;
-			textBoxExclude.Text = exclude = Properties.Settings.Default.Exclude;
+			textBoxExclude.Text = exclude = ".git|" + Properties.Settings.Default.Exclude;		// Exclusion of .git is hard coded
 			excludes = exclude.Split('|');
 			//
 			// Initialize the File System Watcher
@@ -72,25 +73,38 @@ namespace GitLink
 		{
 			try
 			{
-				if (Directory.Exists(e.FullPath) || Directory.Exists(Path.Combine(target, e.Name)))
+				//
+				// Search for excluded files or directories
+				// ========================================
+				//
+				bool found = false;
+				foreach (string item in excludes) if (e.FullPath.EndsWith(@"\" + item) || e.FullPath.Contains(@"\" + item + @"\")) found = true;
+				//
+				// Process non excluded files or directories
+				// =========================================
+				//
+				if (!found)
 				{
-					//
-					// Manage "Created" and "Deleted" events on directories
-					// ====================================================
-					//
-					this.BeginInvoke(new EventHandler(delegate { PushNewMessage("Directory " + e.FullPath + " " + e.ChangeType); }));
-					if (e.ChangeType.ToString() == "Created") Directory.CreateDirectory(Path.Combine(target, e.Name));
-					if (e.ChangeType.ToString() == "Deleted") Directory.Delete(Path.Combine(target, e.Name), true);
-				}
-				else
-				{
-					//
-					// Manage "Created/Changed", and "Deleted" events on files
-					// =======================================================
-					//
-					this.BeginInvoke(new EventHandler(delegate { PushNewMessage("File " + e.FullPath + " " + e.ChangeType); }));
-					if (e.ChangeType.ToString() == "Changed") File.Copy(e.FullPath, Path.Combine(target, e.Name), true);
-					if (e.ChangeType.ToString() == "Deleted") File.Delete(Path.Combine(target, e.Name));
+					if (Directory.Exists(e.FullPath) || Directory.Exists(Path.Combine(target, e.Name)))
+					{
+						//
+						// Manage "Created" and "Deleted" events on directories
+						// ====================================================
+						//
+						this.BeginInvoke(new EventHandler(delegate { PushNewMessage("Directory " + e.FullPath + " " + e.ChangeType); }));
+						if (e.ChangeType.ToString() == "Created") Directory.CreateDirectory(Path.Combine(target, e.Name));
+						if (e.ChangeType.ToString() == "Deleted") Directory.Delete(Path.Combine(target, e.Name), true);
+					}
+					else
+					{
+						//
+						// Manage "Created/Changed", and "Deleted" events on files
+						// =======================================================
+						//
+						this.BeginInvoke(new EventHandler(delegate { PushNewMessage("File " + e.FullPath + " " + e.ChangeType); }));
+						if (e.ChangeType.ToString() == "Changed") File.Copy(e.FullPath, Path.Combine(target, e.Name), true);
+						if (e.ChangeType.ToString() == "Deleted") File.Delete(Path.Combine(target, e.Name));
+					}
 				}
 			}
 			catch(Exception ex)
@@ -117,23 +131,36 @@ namespace GitLink
 		{
 			try
 			{
-				if (Directory.Exists(e.FullPath))
+				//
+				// Search for excluded files or directories
+				// ========================================
+				//
+				bool found = false;
+				foreach (string item in excludes) if (e.FullPath.EndsWith(@"\" + item) || e.FullPath.Contains(@"\" + item + @"\")) found = true;
+				//
+				// Process non excluded files or directories
+				// =========================================
+				//
+				if (!found)
 				{
-					//
-					// Event on directory
-					// ==================
-					//
-					this.BeginInvoke(new EventHandler(delegate { PushNewMessage("Directory " + e.OldFullPath + " renamed to " + e.FullPath); }));
-					Directory.Move(Path.Combine(target, e.OldName), Path.Combine(target, e.Name));
-				}
-				else
-				{
-					//
-					// Event on file
-					// =============
-					//
-					this.BeginInvoke(new EventHandler(delegate { PushNewMessage("File " + e.OldFullPath + " renamed to " + e.FullPath); }));
-					File.Move(Path.Combine(target, e.OldName), Path.Combine(target, e.Name));
+					if (Directory.Exists(e.FullPath))
+					{
+						//
+						// Event on directory
+						// ==================
+						//
+						this.BeginInvoke(new EventHandler(delegate { PushNewMessage("Directory " + e.OldFullPath + " renamed to " + e.FullPath); }));
+						Directory.Move(Path.Combine(target, e.OldName), Path.Combine(target, e.Name));
+					}
+					else
+					{
+						//
+						// Event on file
+						// =============
+						//
+						this.BeginInvoke(new EventHandler(delegate { PushNewMessage("File " + e.OldFullPath + " renamed to " + e.FullPath); }));
+						File.Move(Path.Combine(target, e.OldName), Path.Combine(target, e.Name));
+					}
 				}
 			}
 			catch(Exception ex)
@@ -158,7 +185,8 @@ namespace GitLink
 		private void PushNewMessage(string message)
 		{
 			listBoxMessages.Items.Add(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + " " + message);
-			if (listBoxMessages.Items.Count > 100) listBoxMessages.Items.RemoveAt(listBoxMessages.Items.Count - 1);
+			if (listBoxMessages.Items.Count > 1000) listBoxMessages.Items.RemoveAt(0);
+			listBoxMessages.SelectedIndex = listBoxMessages.Items.Count - 1;
 		}
 		#endregion
 
@@ -233,7 +261,7 @@ namespace GitLink
 			//
 			if (!found)
 			{
-				listBoxMessages.Items.Add(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + " Forced replication of directory: " + directory);
+				PushNewMessage("Forced replication of directory: " + directory);
 				//
 				// Build the target fullpath by replacing source path by target path, conserving the directory name
 				// ================================================================================================
@@ -264,7 +292,7 @@ namespace GitLink
 					//
 					if (!found)
 					{
-						listBoxMessages.Items.Add(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + " Forced replication of File: " + file);
+						PushNewMessage("Forced replication of File: " + file);
 						//
 						// Build the target fullpath by replacing source path by target path, conserving the file name
 						// ===========================================================================================
@@ -419,7 +447,7 @@ namespace GitLink
 				{
 					invalid = true;
 				}
-				if (folderDlg.SelectedPath.StartsWith(@"C:\Windows"))
+				if (folderDlg.SelectedPath.EndsWith(@"C:\Windows"))
 				{
 					invalid = true;
 				}
@@ -427,11 +455,7 @@ namespace GitLink
 				{
 					invalid = true;
 				}
-				if (folderDlg.SelectedPath.StartsWith(@"C:\Users"))
-				{
-					invalid = true;
-				}
-				if (folderDlg.SelectedPath.StartsWith(@"C:\Utilisateurs"))
+				if (folderDlg.SelectedPath.EndsWith(@"\.git"))
 				{
 					invalid = true;
 				}
